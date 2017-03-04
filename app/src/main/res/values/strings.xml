@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">CoolWeather</string>
+    <string name="forecast">最近几日天气</string>
+    <string name="hourly_forecast">未来几小时天气</string>
+    <string name="date">日期</string>
+    <string name="time">时间</string>
+    <string name="weather">天气</string>
+    <string name="temperature">温度</string>
+    <string name="wind_degree">风力</string>
+    <string name="precipitation_probability">降水概率</string>
+    <string name="relative_humidity">湿度</string>
+
+    <string name="aqi">AQI</string>
+    <string name="air_quality">空气质量</string>
+    <string name="pm2.5">PM2.5</string>
+
+    <string name="suggestion">生活建议</string>
+    <string name="dressing_index">穿衣指数：</string>
+    <string name="comfort_index">舒适度指数：</string>
+    <string name="influenza_index">感冒指数：</string>
+    <string name="traveling_index">出行指数：</string>
+    <string name="air_pollution_index">空气污染气象指数：</string>
+    <string name="ultraviolet_index">紫外线指数：</string>
+    <string name="car_washing_index">洗车指数：</string>
+    <string name="sporting_index">运动指数：</string>
+
+    <string name="setting">设置</string>
+    <string name="set_out">退出</string>
+</resources>
