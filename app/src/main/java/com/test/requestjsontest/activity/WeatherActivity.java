@@ -1,5 +1,6 @@
 package com.test.requestjsontest.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +37,8 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -115,7 +119,7 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         String bingPic = prefs.getString("bing_pic", null);
         if (weatherString != null) {
@@ -180,7 +184,7 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (weather != null) {
-                            SharedPreferences prefs = PreferenceManager.
+                            SharedPreferences prefs =
                                     getDefaultSharedPreferences(WeatherActivity.this);
                             String updateTime = prefs.getString("update_time", "");
 
@@ -335,9 +339,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     /**
      * 添加生活建议的方法
-     * @param id
-     * @param brief
-     * @param info
      */
     private void add(int id, String brief, String info) {
         View view = LayoutInflater.from(this).inflate(R.layout.suggestion_item, suggestionLayout,false);
@@ -360,7 +361,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final  String bingPic = response.body().string();
-                SharedPreferences.Editor editor = PreferenceManager.
+                SharedPreferences.Editor editor =
                         getDefaultSharedPreferences(WeatherActivity.this).edit();
                 editor.putString("bing_pic", bingPic);
                 editor.apply();
@@ -391,7 +392,7 @@ public class WeatherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.setting:
-                Toast.makeText(this, "设置", Toast.LENGTH_SHORT).show();
+                settingUpdateFrequency();
                 break;
             case R.id.set_out:
                 Intent intent = new Intent(this, AutoUpdateService.class);
@@ -402,4 +403,58 @@ public class WeatherActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private void settingUpdateFrequency() {
+        final SharedPreferences.Editor editor = PreferenceManager.
+                getDefaultSharedPreferences(WeatherActivity.this).edit();
+
+        final String[]  frequency = {"每1小时", "每2小时", "每4小时", "每8小时", "不自动更新"};
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("请设置自动更新频率");
+        dialog.setIcon(R.drawable.icon);
+        dialog.setCancelable(false);
+        dialog.setSingleChoiceItems(frequency, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        editor.putInt("update_frequency", 1);
+                        break;
+
+                    case 1:
+                        editor.putInt("update_frequency", 2);
+                        break;
+
+                    case 2:
+                        editor.putInt("update_frequency", 4);
+                        break;
+
+                    case 3:
+                        editor.putInt("update_frequency", 8);
+                        break;
+
+                    case 4:
+                        editor.putInt("update_frequency", 0);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
+
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editor.apply();
+                dialog.dismiss();
+                Toast.makeText(WeatherActivity.this, "更新频率设置成功", Toast.LENGTH_SHORT).show();
+                //设置完毕更新频率后直接开启服务以刷新更新频率
+                Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+                startService(intent);
+            }
+        });
+        dialog.create().show();
+    }
+
 }

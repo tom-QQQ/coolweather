@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.test.requestjsontest.gson.Weather;
 import com.test.requestjsontest.util.HttpUtil;
@@ -33,13 +34,24 @@ public class AutoUpdateService extends Service {
         //更新数据只需要更新SharedPreferences的数据即可
         updateWeather();
         updateBingPic();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int updateFrequency = prefs.getInt("update_frequency", 8);
+
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 8 * 60 * 1000;
-        long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
-        Intent i = new Intent(this, AutoUpdateService.class);
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-        manager.cancel(pi);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+        int frequency = updateFrequency * 60 * 1000;
+        //更新频率为0时，停止服务
+        if (frequency == 0) {
+            Intent stopIntent = new Intent(this, AutoUpdateService.class);
+            stopService(stopIntent);
+        } else {
+            long triggerAtTime = SystemClock.elapsedRealtime() + frequency;
+            Intent i = new Intent(this, AutoUpdateService.class);
+            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+            manager.cancel(pi);
+            manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
+            Log.d("更新时间", "天气更新了,更新频率为：" + updateFrequency + "小时/次");
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 

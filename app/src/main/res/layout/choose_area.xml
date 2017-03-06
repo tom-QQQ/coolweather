@@ -40,17 +40,6 @@
             android:layout_centerVertical="true"
             android:background="@drawable/ic_back"/>
 
-        <Button
-            android:id="@+id/setting"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/ic_menu"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_centerVertical="true" />
-
     </RelativeLayout>
 
 </LinearLayout>

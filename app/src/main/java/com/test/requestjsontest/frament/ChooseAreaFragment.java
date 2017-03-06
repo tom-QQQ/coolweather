@@ -129,13 +129,7 @@ public class ChooseAreaFragment extends Fragment {
                 }
             }
         });
-
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        
         queryProvince();
     }
 
