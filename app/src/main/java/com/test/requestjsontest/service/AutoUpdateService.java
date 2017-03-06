@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.test.requestjsontest.gson.Weather;
 import com.test.requestjsontest.util.HttpUtil;
@@ -50,7 +49,6 @@ public class AutoUpdateService extends Service {
             PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
             manager.cancel(pi);
             manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
-            Log.d("更新时间", "天气更新了,更新频率为：" + updateFrequency + "小时/次");
         }
         return super.onStartCommand(intent, flags, startId);
     }
