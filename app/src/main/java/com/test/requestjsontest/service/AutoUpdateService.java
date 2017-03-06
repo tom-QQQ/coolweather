@@ -40,7 +40,7 @@ public class AutoUpdateService extends Service {
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         int frequency = updateFrequency * 60 * 1000;
-        //更新频率为0时，关闭服务
+        //更新频率为0时，停止服务
         if (frequency == 0) {
             Intent stopIntent = new Intent(this, AutoUpdateService.class);
             stopService(stopIntent);
