@@ -37,8 +37,6 @@ public class ChooseAreaFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private List<String> dataList = new ArrayList<>();
 
-    private Button setting;
-
 
     /**
      * 省列表
@@ -81,7 +79,6 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_button);
         listView = (ListView) view.findViewById(R.id.list_view);
-        setting = (Button) view.findViewById(R.id.setting);
         adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
         return view;
@@ -129,7 +126,7 @@ public class ChooseAreaFragment extends Fragment {
                 }
             }
         });
-        
+
         queryProvince();
     }
 
