@@ -18,6 +18,11 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         SharedPreferences pref = getSharedPreferences("data", MODE_PRIVATE);
         boolean isFirst = pref.getBoolean("isFirst", true);

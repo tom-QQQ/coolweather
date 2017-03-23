@@ -21,13 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:layout_margin="15dp">
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:id="@+id/aqi_text"
@@ -62,9 +63,7 @@
                 android:layout_gravity="center"
                 android:textColor="#ffff"
                 android:textSize="40sp"
-                android:layout_marginBottom="5dp"
-
-                android:text="轻度污染"/>
+                android:layout_marginBottom="5dp" />
 
         </LinearLayout>
 
@@ -72,7 +71,8 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:id="@+id/pm25_text"

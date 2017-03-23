@@ -27,14 +27,20 @@ public class FirstActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+    }
 
-        requestResult("http://files.heweather.com/china-city-list.json");
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        requestResult("https://cdn.heweather.com/china-city-list.json");
 
         onCreateDialog();
     }
 
+
     /**
-     * 获取数据后将数据处理后存储在数据库中
+     * 获取数据后将数据存储在数据库中
      * @param address 获取数据的地址URI
      */
     private void requestResult(String address) {
@@ -42,7 +48,8 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-                parseData(subString(responseData));
+                //parseData(subString(responseData));
+                parseData(responseData);
             }
 
             @Override
@@ -54,7 +61,7 @@ public class FirstActivity extends AppCompatActivity {
 
     /**
      * 去除网站返回数据的说明部分
-     * @param data 网站返回的数据
+     * @param data 网站的返回数据
      * @return 去除说明部分之后的json数据
      */
     public static String subString(String data) {
@@ -83,7 +90,7 @@ public class FirstActivity extends AppCompatActivity {
                 jsonData.setLeader(jsonObject.getString("leaderZh"));
                 jsonData.save();
 
-                updateProgressDialog(i);
+                updateProgressDialog(i/3181*100);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -105,13 +112,13 @@ public class FirstActivity extends AppCompatActivity {
     private void onCreateDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(FirstActivity.this);
-            progressDialog.setMessage("正在加载数据，请稍后……");
+            progressDialog.setMessage("正在加载数据,请稍后...");
             progressDialog.setCanceledOnTouchOutside(false);
 
             //修改ProgressDialog的风格，让其显示出进度条
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setProgress(0);
-            progressDialog.setMax(2560);
+            progressDialog.setMax(100);
         }
         progressDialog.show();
     }
